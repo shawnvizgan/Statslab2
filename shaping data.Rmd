@@ -1,0 +1,51 @@
+---
+title: "shaping data"
+author: "Shawn Vizgan"
+date: "2/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##QALMRI
+
+This is a qalmri for Slamecka (1960)
+
+### Question
+
+Does retroactive interference have an effect on normal sentences/information learned. Specifically, does retroactive interference have the same effected on connected information as it does on randomized syllables/words.
+
+### Alternative hypothesis
+
+The alternative hypothesis is that prose passages will be subject to retroactive interference just like randomized information, and there is a direct connection to Original learning and inverse relationship to interpolated learning
+
+The null hypothesis is that there is no relationship between RI and learning real information, and that the results found will not be related to any manipulation but rather as a result of chance
+
+###Logic
+If retroactive learning is already be shown to be inversely related to original learning and directly related to interpolated learning, then we can expect our results to align the same way if the information subjects are shown is subjected to the same procedures
+
+in the case of the null, if theres no such relationship between the "real" information and retroactive learning then our results will be whatever they are with no effect of manipulation
+
+###Methods
+
+36 students from the University of Vermont served as subjects.Each 5 served in four 40-min. sessions, the first being a
+practice period. Each session followed the RI paradigm, with OL, IL, and relearning
+of the OL passage by the method of serial anticipation. The materials were eight 20-
+word sentences, all taken from the same book source, modified slightly for length.
+Each word was exposed on the memory drum for 3 sec. Thus each trial took 60 sec.,followed by a 6-sec. intertrial interval. The
+passages were grouped into four pairs, one of which was used for practice, and the others
+for the experiment proper. The first passage of each pair was for OL and the second for IL.The whole experiment was counterbalanced for different conditions, so there were 3 groups for original learning (of 2, 4 and 8 learning trials) that were tested against (2, 4 and 8 trials) for original learnign acquisition/memory, and 3 groups for interpolated learning (0, 4, 8 trials). These were counterbalanced so that each subject was weighted for all outcomes against each other but no one experienced the same thing.Color guessing was used in between trials to prevent rehearsal of material.
+
+###Results
+The more original learning trials the higher the level of correct anticipation of information at every level of interpotaled learning, and the more interpolated trials the higher the success on original learning acquisition. Controls who had no IL trials had higher numbers than those who went through them and it shows that Retroactive inhibition was attained. As OL increases and IL decreases, less omissions are made, and these trends are similar as to those in results about unrelated material.
+
+
+###Inferences
+
+If retroactive inhibition was found to take place with these materials and conditions, could the same experiment be run while testing out how proactive inhibition would work in relation to original and interpolated learning and how it would affect acquisition. Playing around with other forms of learning could be done with maybe ocasion setting or alternating states of learning to see how it affects acquisition.
+
+
+
+
