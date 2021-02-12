@@ -44,8 +44,10 @@ The more original learning trials the higher the level of correct anticipation o
 
 ###Inferences
 
-If retroactive inhibition was found to take place with these materials and conditions, could the same experiment be run while testing out how proactive inhibition would work in relation to original and interpolated learning and how it would affect acquisition. Playing around with other forms of learning could be done with maybe ocasion setting or alternating states of learning to see how it affects acquisition.
+If retroactive inhibition was found to take place with these materials and conditions, could the same experiment be run while testing out how proactive inhibition would work in relation to original and interpolated learning and how it would affect acquisition. Playing around with other forms of learning could be done with maybe occasion setting or alternating states of learning to see how it affects acquisition.
 
+###References
+Slamecka, N. J. (1960). Retroactive inhibition of connected discourse as a function of practice level. Journal of Experimental Psychology, 59(2), 104–108. https://doi.org/b5z2nt
 
 ```{r}
 
@@ -58,6 +60,18 @@ IL <- 3
 design <- matrix(0,ncol=3, nrow=3)
 colnames(design) <- c("OL_2", "OL_4", "OL_8")
 row.names(design) <- c("IL_00", "IL_04", "IL_08")
+
+36/9
+
+subjects <- 1:36
+OL <- rep(c(2,4,8),12)
+IL <- rep(c(0,4,8), each = 12)
+recall <- rnorm(36, sample 0:20,36, replace = TRUE)
+
+
+
+
+
 
 
 
