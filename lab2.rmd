@@ -1,0 +1,69 @@
+---
+title: "lab2.rmd"
+author: "Shawn Vizgan"
+date: "4/11/2021"
+output: html_document
+---
+part 1
+```{r}
+
+library(ggplot2)
+
+slamecka_design <- tibble(number_of_learning_trials = rep(c(2,4,8), each=6),
+                          number_of_interpolated_lists = rep(rep(c(2,4,8), 2), 3),
+                          subjects = 1:18,
+                          number_of_words_correct = c(35,21,6,
+                                   39,31,8,
+                                   40,34,18,
+                                   52,42,26,
+                                   61,58,46,
+                                   73,66,52
+                                   )
+                          )
+
+ggplot(slamecka_design,aes(x=number_of_interpolated_lists,
+                           group = number_of_learning_trials,
+                           y=number_of_words_correct))+
+  geom_line(stat = "summary", fun = "mean")+
+  geom_point(stat = "summary", fun = "mean",)+
+  theme_classic()+  
+xlab("Number of interpolated lists")+
+  ylab("Number of words correct")+
+  scale_y_continuous(breaks=c(20,40,60,80), limits=c(0,80))+
+  scale_x_continuous(breaks=c(2,4,8), limits = c(1,12))+
+  theme(legend.position = "none")+
+  annotate("text", x = 10, y = 50, label = "8 learning trials")+
+  annotate("text", x = 10, y = 22, label = "4 learning trials")+
+  annotate("text", x = 10, y = 8, label = "2 learning trials")
+```
+part 2
+
+```{r}
+new_data <- tibble(reward = rep(c("A:0","B:50","C:1000000"), each = 9),
+                   practice = rep(rep(c(2,4,8), each = 3),3),
+                   distraction = as.factor(rep(c(0,4,8),9)),
+                   recall = c(5,3,1,
+                              6,4,2,
+                              7,5,3,
+                              10,8,6,
+                              11,9,7,
+                              12,10,8,
+                              15,13,11,
+                              16,14,12,
+                              17,15,13
+                              )
+                   )
+ggplot(new_data,aes(x=practice,
+                    group = distraction,
+                    y=recall,
+                    shape=distraction))+
+  geom_line()+
+  geom_point()+
+  theme_classic()+
+  xlab("Number of interpolated lists")+
+  ylab("Number of words correct")+
+  scale_y_continuous(breaks=c(0,5,10,15,20), limits=c(0,20))+
+  scale_x_continuous(breaks=c(2,4,8))+
+  facet_wrap(~reward)
+```
+
