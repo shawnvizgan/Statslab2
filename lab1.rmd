@@ -52,27 +52,71 @@ Slamecka, N. J. (1960). Retroactive inhibition of connected discourse as a funct
 ```{r}
 
 
+library(tibble)
 n <- 36
 OL <- 3
-IL <- 3 
-
-
-design <- matrix(0,ncol=3, nrow=3)
-colnames(design) <- c("OL_2", "OL_4", "OL_8")
-row.names(design) <- c("IL_00", "IL_04", "IL_08")
-
+IL <- 3
+design <- matrix(4,ncol=3, nrow=3)
+colnames(design) <- c("OL_2","OL_4","OL_8")
+row.names(design) <- c("IL_0","IL_4","IL_8") 
 36/9
-
+# between-subjects version
 subjects <- 1:36
 OL <- rep(c(2,4,8),12)
-IL <- rep(c(0,4,8), each = 12)
-recall <- rnorm(36, sample 0:20,36, replace = TRUE)
-
-
-
-
-
-
+IL <- rep(c(0,4,8), each=12)
+recall <- sample(0:20,36, replace=TRUE)
+long_design <- tibble(subjects,
+                      OL,
+                      IL,
+                      recall)
+library(dplyr)
+long_design %>%
+  group_by(OL,IL)%>%
+  count()
+# mixed design
+mixed_design <- tribble(
+  ~Subjects, ~OL, ~IL,
+  #--|--|----
+  1, 2, 0,
+  1, 4, 4,
+  1, 8, 8,
+  2, 4, 0,
+  2, 8, 4,
+  2, 2, 8,
+  3, 8, 0,
+  3, 2, 4,
+  3, 4, 8,
+  4, 2, 4,
+  4, 4, 0,
+  4, 8, 8,
+  5, 4, 4,
+  5, 2, 8,
+  5, 8, 0,
+  6, 8, 4,
+  6, 4, 8,
+  6, 2, 0,
+  7, 2, 8,
+  7, 4, 0,
+  7, 8, 4,
+  8, 4, 8,
+  8, 2, 4,
+  8, 8, 0,
+  9, 8, 8,
+  9, 4, 4,
+  9, 2, 0
+)
+mixed_design %>%
+  group_by(OL,IL)%>%
+  count()
+full_mixed_design <- rbind(mixed_design,
+                           mixed_design,
+                           mixed_design,
+                           mixed_design) %>%
+  mutate(Subjects = rep(1:36, each=3),
+         recall = sample(0:20,36*3, replace=TRUE))
+full_mixed_design %>%
+  group_by(OL,IL) %>%
+  summarize(mean_recall = mean(recall), .groups="drop")
 
 
 ```
