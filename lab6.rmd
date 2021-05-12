@@ -1,0 +1,48 @@
+---
+title: "lab6.rmd"
+author: "Shawn Vizgan"
+date: "5/12/2021"
+output: html_document
+---
+1a) 
+```{r}
+
+A <- replicate(10000,sum(rbinom(20,1,.05)))
+hist(A)
+length(A[A > 0])/10000
+B <- replicate(10000,sum(rbinom(50,1,.05)))
+hist(B)
+length(B[B > 0])/10000
+
+```
+1b) 
+```{r}
+D <- replicate(10000,sum(rbinom(20,3,.05)))
+length(D[D > 0])/10000
+```
+2) 
+```{r}
+library(tibble)
+# my_pvalues <- c()
+# 
+# for(i in 1:10000){
+# 
+#   IV <- rep(1:2,each=20)
+#   DV <- c(rnorm(20,0,1),rnorm(20,0,1))
+#   
+#   sim_data <- tibble(IV,DV)
+#   
+#   my_pvalues[i] <- t.test(DV~IV, var.equal=TRUE,  data = sim_data)$p.value
+#   
+# }
+# 
+# hist(my_pvalues)
+my_pvalues <- replicate(10000,t.test(rnorm(20,0,1),rnorm(20,0,1), var.equal=TRUE)$p.value)
+hist(my_pvalues)
+```
+3)
+
+```{r}
+my_pvalues <- replicate(10000,t.test(rnorm(20,0.5,1),rnorm(20,0,1), var.equal=TRUE)$p.value)
+hist(my_pvalues)
+```
