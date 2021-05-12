@@ -1,0 +1,139 @@
+---
+title: "lab9.rmd"
+author: "Shawn Vizgan"
+date: "5/12/2021"
+output: html_document
+---
+
+1)
+
+```{r}
+
+# mean = 0, sd =1
+library(tibble)
+library(dplyr)
+sim_data <- tibble(
+  subjects = rep(1:6,each=5),
+  IV = rep(c("Down2","Down1","Control","Up1","Up2"),6),
+  DV = rnorm(6*5,c(-2,-1,0,1,2),1)
+) %>%
+  mutate(DV = DV+rep(rnorm(6,0,1), each=5))
+sim_data$IV <- factor(sim_data$IV, levels = c("Down2","Down1","Control","Up1","Up2"))
+sim_data$subjects <- as.factor(sim_data$subjects)
+ggplot(sim_data, aes(x=IV, y=DV, group=subjects,
+                     color=subjects))+
+  geom_point()+
+  geom_line()
+
+```
+
+2)
+
+```{r}
+
+save_p <- c()
+for( i in 1:1000){
+sim_data <- tibble(
+  subjects = rep(1:6,each=5),
+  IV = rep(c("Down2","Down1","Control","Up1","Up2"),6),
+  DV = rnorm(6*5,c(-.2,-.1,0,.1,.2),1)
+) %>%
+  mutate(DV = DV+rep(rnorm(6,0,1), each=5))
+sim_data$IV <- factor(sim_data$IV, levels = c("Down2","Down1","Control","Up1","Up2"))
+sim_data$subjects <- as.factor(sim_data$subjects)
+aov_out <- summary(aov(DV ~ IV + Error(subjects), sim_data))
+save_p[i] <- aov_out[2]$`Error: Within`[[1]]$`Pr(>F)`[1]
+}
+length(save_p[save_p < .05])/1000
+
+```
+
+3) 
+```{r}
+godden_baddeley <- tribble(~Subjects,~LearningPlace,~TestingPlace,~Recall,
+        "s1","On Land","On Land",34,
+        "s2","On Land","On Land",37,
+        "s3","On Land","On Land",27,
+        "s4","On Land","On Land",43,
+        "s5","On Land","On Land",44,
+        "s1","On Land","Under Sea",18,
+        "s2","On Land","Under Sea",21,
+        "s3","On Land","Under Sea",25,
+        "s4","On Land","Under Sea",37,
+        "s5","On Land","Under Sea",34,
+        "s1","Under Sea","On Land",14,
+        "s2","Under Sea","On Land",21,
+        "s3","Under Sea","On Land",31,
+        "s4","Under Sea","On Land",27,
+        "s5","Under Sea","On Land",32,
+        "s1","Under Sea","Under Sea",22,
+        "s2","Under Sea","Under Sea",25,
+        "s3","Under Sea","Under Sea",33,
+        "s4","Under Sea","Under Sea",33,
+        "s5","Under Sea","Under Sea",42
+        )
+# convert IVs to factors
+godden_baddeley <- godden_baddeley %>%
+  mutate(Subjects = as.factor(Subjects),
+         LearningPlace = as.factor(LearningPlace),
+         TestingPlace = as.factor(TestingPlace))
+# run ANOVA
+aov_out <- aov(Recall ~ LearningPlace*TestingPlace + Error(Subjects/(LearningPlace*TestingPlace)), godden_baddeley)
+# print out ANOVA summary table
+summary(aov_out)
+# generate plot of means
+library(ggplot2)
+ggplot(godden_baddeley, aes(x=TestingPlace,
+                            y=Recall,
+                            shape=LearningPlace,
+                            group=LearningPlace))+
+  geom_point(stat="summary",fun="mean")+
+  geom_line(stat="summary",fun="mean")+
+  theme_classic(base_size=12)
+#### one-sample t test solutions
+# main effect of learning place
+learning_place_means <- godden_baddeley %>%
+  group_by(Subjects,LearningPlace) %>%
+  summarize(mean_recall = mean(Recall))
+t.test(mean_recall ~ LearningPlace, paired=TRUE, data=learning_place_means)
+Learning_land <- learning_place_means %>%
+  filter(LearningPlace == "On Land") %>%
+  select(mean_recall)
+Learning_sea <- learning_place_means %>%
+  filter(LearningPlace == "Under Sea") %>%
+  select(mean_recall)
+t.test(Learning_land$mean_recall - Learning_sea$mean_recall, mu=0)
+# main effect of testing place
+testing_place_means <- godden_baddeley %>%
+  group_by(Subjects,TestingPlace) %>%
+  summarize(mean_recall = mean(Recall))
+t.test(mean_recall ~ TestingPlace, paired=TRUE, data=testing_place_means)
+Testing_land <- testing_place_means %>%
+  filter(TestingPlace == "On Land") %>%
+  select(mean_recall)
+Testing_sea <- testing_place_means %>%
+  filter(TestingPlace == "Under Sea") %>%
+  select(mean_recall)
+t.test(Testing_land$mean_recall - Testing_sea$mean_recall, mu=0)
+## interaction
+LL <- godden_baddeley %>%
+  filter(LearningPlace == "On Land",
+         TestingPlace == "On Land") %>%
+  pull(Recall)
+LS <- godden_baddeley %>%
+  filter(LearningPlace == "On Land",
+         TestingPlace == "Under Sea") %>%
+  pull(Recall)
+LL - LS
+SL <- godden_baddeley %>%
+  filter(LearningPlace == "Under Sea",
+         TestingPlace == "On Land") %>%
+  pull(Recall)
+SS <- godden_baddeley %>%
+  filter(LearningPlace == "Under Sea",
+         TestingPlace == "Under Sea") %>%
+  pull(Recall)
+SL - SS
+t.test((LL - LS) - (SL - SS), mu=0)
+
+```
